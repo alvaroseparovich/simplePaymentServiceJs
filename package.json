@@ -1,0 +1,22 @@
+{
+  "name": "picpayjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bundle/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bundle/index.js",
+    "tsc": "npx tsc",
+    "build": "podman build -t pic .",
+    "podmanStart": "podman run --name picpic -p 8080:8080 -d --replace pic"
+  },
+  "author": "alvaro separovich",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "nodemon": "^3.1.3"
+  }
+}
