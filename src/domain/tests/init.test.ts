@@ -1,5 +1,5 @@
-describe("testing example", () => {
-  test("verify true value", () => {
+describe('testing example', () => {
+  test('verify true value', () => {
     expect(true).toBe(true)
   })
 })
