@@ -1,18 +1,10 @@
-import express from 'express'
-import { ApiRouter } from '#api/routes'
-const app = express()
-const router = express.Router()
+import ApiExpress from '#api/ApiExpress'
+import ErrorHandler from '#api/errors/ErrorHandler'
+import { ApiRouterExpress } from '#api/routes/ApiRouterExpress'
+import { ApiController } from '#domain/controllers/ApiController'
+import { ApiErrorHandler } from '#domain/errors/ApiErroHandler'
 
-const port = 8080
+const apiRouterExpress = new ApiRouterExpress(new ApiController())
+const api = new ApiExpress(apiRouterExpress.router, new ErrorHandler(new ApiErrorHandler()), 8080)
 
-router.use((req, res, next) => {
-  console.log(`/${req.method}`)
-  next()
-})
-
-app.use('/', ApiRouter)
-
-app.listen(port, () => {
-  console.log('Example app listening on port 8080!')
-  console.log(process.env.PORT)
-})
+api.start()

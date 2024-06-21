@@ -20,7 +20,7 @@ services:
       - LOCALSTACK_HOSTNAME=localstack
       - LOCALSTACK_SERVICES=sqs,sns
     user: root  
-    command: sh -c "npx nodemon /app/bundle/index.js"
+    command: sh -c "npx nodemon -r tsconfig-paths/register /app/src/index.ts"
     depends_on:
       - postgres
       - localstack

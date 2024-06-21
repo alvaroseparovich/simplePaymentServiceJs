@@ -4,7 +4,7 @@
     "enabled": true
   },
   "files": {
-    "ignore": ["*.js", "**/database/migrations/*"]
+    "ignore": ["*.js", "**/database/migrations/*", "./node_modules/*"]
   },
   "linter": {
     "enabled": true,

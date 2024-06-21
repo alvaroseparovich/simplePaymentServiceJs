@@ -12,7 +12,8 @@ dev/test:
 	npx jest
 
 
-docker/start: $(DOCKER) run --name picpic -p 8080:8080 -d --replace pic"
+docker/start: 
+	$(DOCKER) run --name picpic -p 8080:8080 -d --replace pic"
 
 typescript/compile:
 	npx tsc && npx tsc-alias

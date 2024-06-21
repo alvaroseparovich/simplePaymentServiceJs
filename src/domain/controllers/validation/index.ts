@@ -10,6 +10,7 @@ export const customerValidation = z.object({
     type: z.nativeEnum(IWalletTypes),
   }),
 })
+export const customerIdValidation = z.coerce.number()
 
 export const transferValidation = z.object({
   value: z.number().int().safe().positive(),
