@@ -1,7 +1,8 @@
 import type { ICustomer } from '#domain/interfaces/IEntities'
+import type { ICustomerRequestDTO } from '#domain/interfaces/IRequestResponseDTOs'
 
 export interface IApiController {
-  postCustomer(customer: ICustomer): ICustomer
+  postCustomer(customer: ICustomerRequestDTO): Promise<ICustomer>
   getCustomer(id: ICustomer['id'] | string): ICustomer
   postTransfer(transferDTO: ITransferDTO): ITransferResponseDTO
 }

@@ -1,1 +1,2 @@
-DROP TABLE example
+DROP TABLE wallets;
+DROP TABLE customers;

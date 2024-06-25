@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { IWalletTypes } from '#domain/interfaces/IEntities'
 
-export const customerValidation = z.object({
+export const customerRequestDTOValidation = z.object({
   name: z.string().max(128),
   document: z.string().max(24).min(11),
   email: z.string().email(),

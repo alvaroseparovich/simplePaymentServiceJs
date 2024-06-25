@@ -15,15 +15,16 @@ export class ApiErrorHandler implements IApiErrorHandler {
   }
 
   handle(error: Error): IErrorResponse<string, object> {
-    try {
-      console.log(error.name)
+    console.log(error.name)
+    if (Object.keys(this._handlers).includes(error.name)) {
+      console.log('tem aqui nessa lista')
       return this._handlers[error.name](error)
-    } catch (err) {
-      console.error('Unexpected Error Ocurred', err, 'Original Error', error)
-      return {
-        statusCode: 500,
-        message: 'Unexpected Error Ocurred',
-      }
+    }
+
+    console.log('Nao tem aqui nessa lista', error)
+    return {
+      statusCode: 500,
+      message: 'Unexpected Error Ocurred',
     }
   }
 }

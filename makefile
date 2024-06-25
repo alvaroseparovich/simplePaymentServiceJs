@@ -3,13 +3,15 @@ COMPOSER = $(DOCKER)-compose
 
 
 dev/start:
-	npx nodemon -r tsconfig-paths/register ./src/index.ts
+	npx nodemon -r tsconfig-paths/register ./src/api/index.ts
 dev/start/js:
-	node ./bundle/index.js
+	node ./bundle/api/index.js
 dev/lint:
 	npx biome check --write ./src
 dev/test:
-	npx jest
+	node --test --watch
+dev/clear:
+	rm -rf ./bundle
 
 
 docker/start: 
@@ -33,10 +35,14 @@ toolbox/build:
                                                            
 infra/up:
 	$(COMPOSER) up
+
 infra/up/build:
-	$(COMPOSER) up --build
+	$(COMPOSER) up --build -d
+	sleep 10
+	make infra/db/migration/up
+
 infra/down:
-	$(COMPOSER) down
+	$(COMPOSER) down --remove-orphans -v
 infra/enter:
 	$(COMPOSER) run node-app sh 
 

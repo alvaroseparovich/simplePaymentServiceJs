@@ -1,12 +1,14 @@
 export interface ICustomer {
-  id?: number
+  id?: string
   name: string
   document: string
   email: string
-  wallet: IWallet
+  wallet?: IWallet
 }
 
 export interface IWallet {
+  id?: string
+  customer_id?: string
   type: IWalletTypes
   balance?: number
 }

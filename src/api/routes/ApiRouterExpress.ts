@@ -15,8 +15,8 @@ export class ApiRouterExpress {
       res.json(this.apiController.getCustomer(req.params.customerId))
     })
 
-    this.router.post('/customer', (req, res) => {
-      res.json(this.apiController.postCustomer(req.body || {}))
+    this.router.post('/customer', async (req, res) => {
+      res.json(await this.apiController.postCustomer(req.body || {}))
     })
 
     this.router.post('/transfer', (req, res) => {
