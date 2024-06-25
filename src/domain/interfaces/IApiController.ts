@@ -3,7 +3,7 @@ import type { ICustomerRequestDTO } from '#domain/interfaces/IRequestResponseDTO
 
 export interface IApiController {
   postCustomer(customer: ICustomerRequestDTO): Promise<ICustomer>
-  getCustomer(id: ICustomer['id'] | string): ICustomer
+  getCustomer(id: string): Promise<ICustomer>
   postTransfer(transferDTO: ITransferDTO): ITransferResponseDTO
 }
 

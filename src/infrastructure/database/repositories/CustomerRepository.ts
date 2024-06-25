@@ -1,15 +1,12 @@
-import type { Pool } from 'pg'
 import type { ICustomer } from '#domain/interfaces/IEntities'
 import type { ICustomerRepository } from '#domain/interfaces/IRepositories'
 import { database } from '#infrastructure/database/configs/postgressDriver'
 import type { Database } from '#infrastructure/database/configs/postgressDriver'
 
 export class CustomerRepository implements ICustomerRepository {
-  private pool: Pool
   private database: Database
 
   constructor() {
-    this.pool = database.pool
     this.database = database
   }
 
@@ -26,8 +23,16 @@ export class CustomerRepository implements ICustomerRepository {
     return result.rows[0]
   }
 
-  find(id: ICustomer['id']): ICustomer {
-    return { id } as ICustomer
+  async find(id: string): Promise<ICustomer> {
+    const query = `
+    SELECT id, full_name as name, email, document
+    FROM customers
+    WHERE id = $1
+    `
+    const values = [id]
+
+    const result = await this.database.executeQuery(query, values)
+    return result.rows[0] as ICustomer
   }
 
   // async read(id: number): Promise<Customer | null> {

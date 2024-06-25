@@ -10,4 +10,7 @@ export class WalletService implements IWalletService {
   async saveWallet(wallet: IWallet, customer_id: string): Promise<IWallet> {
     return this.walletRepository.create(wallet, customer_id)
   }
+  async getWallet(customer_id: string): Promise<IWallet> {
+    return this.walletRepository.find(customer_id)
+  }
 }

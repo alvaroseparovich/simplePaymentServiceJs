@@ -24,4 +24,15 @@ export class CustomerService implements ICustomerService {
     }
     return customerSaved as ICustomer
   }
+
+  async getCustomer(id: string): Promise<ICustomer> {
+    const customer = await this.customerRepository.find(id)
+    const wallet = await this.walletService.getWallet(customer.id as string)
+
+    customer.wallet = {
+      type: wallet.type,
+      balance: wallet.balance,
+    }
+    return customer
+  }
 }

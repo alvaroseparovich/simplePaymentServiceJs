@@ -24,9 +24,17 @@ export class WalletRepository implements IWalletRepository {
     return result.rows[0]
   }
 
-  // find(id: ICustomer['id']): ICustomer {
-  //   return {id} as ICustomer
-  // }
+  async find(customer_id: string): Promise<IWallet> {
+    const query = `
+    SELECT id, customer_id, wallet_type as type, balance
+    FROM wallets
+    WHERE customer_id = $1
+    `
+    const values = [customer_id]
+
+    const result = await this.database.executeQuery(query, values)
+    return result.rows[0] as IWallet
+  }
 
   // async read(id: number): Promise<Customer | null> {
   //   const query = 'SELECT * FROM customers WHERE id = $1';
