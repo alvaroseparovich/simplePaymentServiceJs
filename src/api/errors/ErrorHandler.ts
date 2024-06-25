@@ -9,10 +9,11 @@ export default class ErrorHandlerExpress {
   }
 
   handle(err: Error, req: Request, res: Response) {
+    console.log(err)
     const errorResponse = this.domainErrorHandler.handle(err)
 
     res.status(errorResponse.statusCode).send({
-      message: errorResponse.message,
+      body: errorResponse.body,
       context: errorResponse.context,
     })
   }

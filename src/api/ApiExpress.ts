@@ -1,4 +1,5 @@
 import express from 'express'
+import 'express-async-errors'
 import type { Application, NextFunction, Request, Response, Router } from 'express'
 import type ErrorHandler from '#api/errors/ErrorHandler'
 
@@ -29,6 +30,7 @@ export default class ApiExpress {
     // Catch Any errors
     this.framework.use((error: Error, request: Request, response: Response, next: NextFunction) => {
       this.errorHandler.handle(error, request, response)
+      next()
     })
 
     // Start Server
