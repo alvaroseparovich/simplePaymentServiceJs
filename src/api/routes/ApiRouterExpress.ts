@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import type { IApiController } from '#domain/interfaces/IApiController'
+import { HttpStatusCode, type IApiController } from '#domain/interfaces/IApiController'
 
 export class ApiRouterExpress {
   private apiController: IApiController
@@ -12,15 +12,17 @@ export class ApiRouterExpress {
 
   private startRoutes() {
     this.router.get('/customer/:customerId', async (req, res) => {
-      res.json(await this.apiController.getCustomer(req.params.customerId))
+      const response = await this.apiController.getCustomer(req.params.customerId)
+      res.status(response.statusCode).json(response.body)
     })
 
     this.router.post('/customer', async (req, res) => {
-      res.json(await this.apiController.postCustomer(req.body || {}))
+      const customer = await this.apiController.postCustomer(req.body || {})
+      res.status(customer.statusCode).json(customer.body)
     })
 
     this.router.post('/transfer', (req, res) => {
-      res.json(this.apiController.postTransfer(req.body || {}))
+      res.status(HttpStatusCode.NOT_IMPLEMENTED).json(this.apiController.postTransfer(req.body || {}))
     })
   }
 }
