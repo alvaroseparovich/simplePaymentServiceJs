@@ -1,0 +1,40 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "CUSTOMER",
+  "collectionId": "d9253cb4-38c9-4fa6-b13f-5f661449a219",
+  "dateExported": "2024-06-26T23:45:35.522Z",
+  "version": "1.2",
+  "folders": [],
+  "requests": [
+    {
+      "_id": "42d33017-0c66-4e82-a041-4a0a8147329e",
+      "colId": "d9253cb4-38c9-4fa6-b13f-5f661449a219",
+      "containerId": "",
+      "name": "Get Customer",
+      "url": "http://localhost:8080/customer/1",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2024-06-26T23:45:14.545Z",
+      "modified": "2024-06-26T23:45:14.545Z",
+      "headers": []
+    },
+    {
+      "_id": "a53b9243-16e9-4778-8988-da649040cecc",
+      "colId": "d9253cb4-38c9-4fa6-b13f-5f661449a219",
+      "containerId": "",
+      "name": "Create Customer",
+      "url": "http://localhost:8080/customer",
+      "method": "POST",
+      "sortNum": 20000,
+      "created": "2024-06-26T23:45:25.344Z",
+      "modified": "2024-06-26T23:45:25.344Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Kanopka Martin\",\n  \"document\": \"12345678912\",\n  \"email\": \"asd@asda.com\",\n  \"password\": \"valueHere\",\n  \"wallet\": {\n    \"type\": \"CUSTOMER\",\n    \"NON_EXPECTED\": \"cuzey\"\n  },\n  \"NON_EXPECTED\": \"Crazy\"\n}",
+        "form": []
+      }
+    }
+  ],
+  "ref": "2LlE8km561PFL0tHOiLvfPXIo6qZs8fM9Vi_KAorYaFW9ApeTlZ7Xh3L4lxJo4lMXzo2o3sngqcDEY-50H5fVw"
+}

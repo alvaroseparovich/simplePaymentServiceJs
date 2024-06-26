@@ -42,6 +42,6 @@ services:
       - SERVICES=sqs,sns
       - DOCKER_HOST=unix:///var/run/docker.sock
     ports:
-      - "4566:4566"  # LocalStack main port
-      - "4571:4571"  # LocalStack alternate port
+      - "4577:4566"  # LocalStack main port
+      - "4588:4571"  # LocalStack alternate port
 

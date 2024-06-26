@@ -49,6 +49,10 @@ toolbox/build:
 DB_MIGRATE_CONFIG = --config ./src/infrastructure/database/configs/local.json --migrations-dir ./src/infrastructure/database/migrations                                                           
 infra/up:
 	$(COMPOSER) up
+infra/up/complete:
+	$(COMPOSER) up -d
+	sleep 10
+	make infra/db/migration/up
 
 infra/up/build:
 	$(COMPOSER) up --build -d
@@ -66,6 +70,9 @@ infra/test/up:
 	$(COMPOSER) -f docker-compose.test.yaml down	
 	$(COMPOSER) -f docker-compose.test.yaml up -d
 	sleep 10
+infra/test/down:
+	$(COMPOSER) -f docker-compose.test.yaml down	
+
 infra/test/migrate:
 	npx db-migrate up $(DB_MIGRATE_CONFIG) -e test
 infra/test/reset:
