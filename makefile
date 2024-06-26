@@ -9,7 +9,11 @@ dev/start/js:
 dev/lint:
 	npx biome check --write ./src
 dev/test:
-	node --test --watch
+	make dev/clear
+	make typescript/compile
+	make infra/test/reset
+	make infra/test/migrate
+	node --test
 dev/clear:
 	rm -rf ./bundle
 
@@ -32,21 +36,33 @@ toolbox/build:
 # | || |\  |  _| |  _ <  / ___ \ ___) || | |  _ <| |_| | |___  | | | |_| |  _ < | |___ 
 #|___|_| \_|_|   |_| \_\/_/   \_\____/ |_| |_| \_\\___/ \____| |_|  \___/|_| \_\|_____|
 
-                                                           
+
+DB_MIGRATE_CONFIG = --config ./src/infrastructure/database/configs/local.json --migrations-dir ./src/infrastructure/database/migrations                                                           
 infra/up:
 	$(COMPOSER) up
 
 infra/up/build:
 	$(COMPOSER) up --build -d
 	sleep 10
-	make infra/db/migration/up
 
 infra/down:
 	$(COMPOSER) down --remove-orphans -v
 infra/enter:
 	$(COMPOSER) run node-app sh 
 
-DB_MIGRATE_CONFIG = --config ./src/infrastructure/database/configs/local.json --migrations-dir ./src/infrastructure/database/migrations
+infra/test/build:
+	$(COMPOSER) -f docker-compose.test.yaml up --build -d --replace test
+	sleep 10
+infra/test/up:
+	$(COMPOSER) -f docker-compose.test.yaml down	
+	$(COMPOSER) -f docker-compose.test.yaml up -d
+	sleep 10
+infra/test/migrate:
+	npx db-migrate up $(DB_MIGRATE_CONFIG) -e test
+infra/test/reset:
+	npx db-migrate reset $(DB_MIGRATE_CONFIG) -e test
+
+
 infra/db/migration/create:
 	npx db-migrate create migration $(DB_MIGRATE_CONFIG)
 infra/db/migration/up:

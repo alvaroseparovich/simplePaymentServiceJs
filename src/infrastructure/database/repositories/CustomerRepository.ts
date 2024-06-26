@@ -8,8 +8,8 @@ import type { Database } from '#infrastructure/database/configs/postgressDriver'
 export class CustomerRepository implements ICustomerRepository {
   private database: Database
 
-  constructor() {
-    this.database = database
+  constructor(db = database) {
+    this.database = db
   }
 
   async create(customer: ICustomer): Promise<ICustomer> {

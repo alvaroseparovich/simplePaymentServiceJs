@@ -2,14 +2,15 @@ import { Pool } from 'pg'
 
 export class Database {
   pool
-  constructor() {
-    this.pool = new Pool({
-      user: process.env.DATABASE_USER,
-      host: process.env.DATABASE_HOST,
-      database: process.env.DATABASE_NAME,
-      password: process.env.DATABASE_PASSWORD,
-      port: Number(process.env.DATABASE_PORT) || 5432,
-    })
+
+  constructor(
+    user = process.env.DATABASE_USER,
+    host = process.env.DATABASE_HOST,
+    database = process.env.DATABASE_NAME,
+    password = process.env.DATABASE_PASSWORD,
+    port = Number(process.env.DATABASE_PORT) || 5432,
+  ) {
+    this.pool = new Pool({ user, host, database, password, port })
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>

@@ -1,4 +1,3 @@
-import type { Pool } from 'pg'
 import type { IWallet } from '#domain/interfaces/IEntities'
 import type { IWalletRepository } from '#domain/interfaces/IRepositories'
 import { database } from '#infrastructure/database/configs/postgressDriver'

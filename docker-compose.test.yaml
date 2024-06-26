@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  node-app-test:
+    build: .
+    ports:
+      - "8081:8080"
+    volumes:
+      - .:/app:Z
+    environment:
+      - PORT=8080
+      - DATABASE_HOST=postgres-test
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=postgres
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+      - LOCALSTACK_HOSTNAME=localstack
+      - LOCALSTACK_SERVICES=sqs,sns
+    user: root  
+    command: sh -c "npx nodemon -r tsconfig-paths/register /app/src/api/index.ts"
+    depends_on:
+      - postgres
+      - localstack
+
+  postgres-test:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
+
+  localstack-test:
+    image: localstack/localstack:latest
+    environment:
+      - SERVICES=sqs,sns
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    ports:
+      - "4566:4566"  # LocalStack main port
+      - "4571:4571"  # LocalStack alternate port
+
