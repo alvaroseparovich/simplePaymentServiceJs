@@ -1,3 +1,5 @@
+# All commands to run the project should be here.
+# 
 DOCKER = podman
 COMPOSER = $(DOCKER)-compose
 
@@ -8,18 +10,25 @@ dev/start/js:
 	node ./bundle/api/index.js
 dev/lint:
 	npx biome check --write ./src
+
+# To Run the tests please start the test enviroment runing:
+# when its your first time: make infra/test/build 
+# and to start the env: make infra/test/up
+# then you can run the following command
 dev/test:
 	make dev/clear
 	make typescript/compile
 	make infra/test/reset
 	make infra/test/migrate
 	node --test
+
 dev/clear:
 	rm -rf ./bundle
 
 
 docker/start: 
-	$(DOCKER) run --name picpic -p 8080:8080 -d --replace pic"
+	$(DOCKER) run --name picpic -p 8080:8080 -d --replace picpic"
+
 
 typescript/compile:
 	npx tsc && npx tsc-alias
@@ -51,8 +60,8 @@ infra/enter:
 	$(COMPOSER) run node-app sh 
 
 infra/test/build:
-	$(COMPOSER) -f docker-compose.test.yaml up --build -d --replace test
-	sleep 10
+	$(COMPOSER) -f docker-compose.test.yaml up --build -d
+
 infra/test/up:
 	$(COMPOSER) -f docker-compose.test.yaml down	
 	$(COMPOSER) -f docker-compose.test.yaml up -d

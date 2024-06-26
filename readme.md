@@ -26,3 +26,6 @@ To follow it and keep our domain secure from external behaviour:
 
 # FUll Documentation
 [Here is](/readme/documentation-startup-guide.md) the full documentation, with more detailed desired behaviour.
+
+# Start up
+See the makefile
