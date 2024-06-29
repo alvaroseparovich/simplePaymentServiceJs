@@ -21,8 +21,9 @@ export class ApiRouterExpress {
       res.status(customer.statusCode).json(customer.body)
     })
 
-    this.router.post('/transfer', (req, res) => {
-      res.status(HttpStatusCode.NOT_IMPLEMENTED).json(this.apiController.postTransfer(req.body || {}))
+    this.router.post('/transfer', async (req, res) => {
+      const transfer = await this.apiController.postTransfer(req.body || {})
+      res.status(transfer.statusCode).json(transfer.body)
     })
   }
 }

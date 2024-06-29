@@ -4,13 +4,13 @@ import type { ICustomerRequestDTO } from '#domain/interfaces/IRequestResponseDTO
 export interface IApiController {
   postCustomer(customer: ICustomerRequestDTO): Promise<HttpResponse<ICustomer>>
   getCustomer(id: string): Promise<HttpResponse<ICustomer>>
-  postTransfer(transferDTO: ITransferDTO): ITransferResponseDTO
+  postTransfer(transferDTO: ITransferDTO): Promise<HttpResponse<ITransferResponseDTO>>
 }
 
 export interface ITransferDTO {
   value: number
-  payer: ICustomer['id']
-  payee: ICustomer['id']
+  payer: string
+  payee: string
 }
 
 export interface ITransferResponseDTO extends ITransferDTO {

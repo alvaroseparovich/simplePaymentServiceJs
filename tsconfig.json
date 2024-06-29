@@ -34,6 +34,7 @@
       "#domain/*": ["domain/*"],
       "#api/*": ["api/*"],
       "#infrastructure/*": ["infrastructure/*"],
+      "#outsource-services/*": ["outsource-services/*"],
       "#testing/*": ["testing/*"]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */

@@ -4,13 +4,23 @@ import { ApiRouterExpress } from '#api/routes/ApiRouterExpress'
 import { ApiController } from '#domain/controllers/ApiController'
 import { ApiErrorHandler } from '#domain/errors/ApiErroHandler'
 import { CustomerService } from '#domain/services/CustomerService'
+import { TransferService } from '#domain/services/TransferService'
 import { WalletService } from '#domain/services/WalletService'
 import { CustomerRepository } from '#infrastructure/database/repositories/CustomerRepository'
+import { TransferRepository } from '#infrastructure/database/repositories/TransferRepository'
 import { WalletRepository } from '#infrastructure/database/repositories/WalletRepository'
+import { AuthorizerExternal } from '#outsource-services/AuthorizerExternal'
 
-const customerService = new CustomerService(new CustomerRepository(), new WalletService(new WalletRepository()))
+const walletRepository = new WalletRepository()
+const customerRepository = new CustomerRepository()
+const transferRepository = new TransferRepository()
 
-const apiController = new ApiController(customerService)
+const walletService = new WalletService(walletRepository)
+const customerService = new CustomerService(customerRepository, walletService)
+const authorizerExternal = new AuthorizerExternal()
+const transferService = new TransferService(transferRepository, customerService, walletService, authorizerExternal)
+
+const apiController = new ApiController(customerService, transferService)
 
 const apiRouterExpress = new ApiRouterExpress(apiController)
 const api = new ApiExpress(apiRouterExpress.router, new ErrorHandler(new ApiErrorHandler()), 8080)

@@ -14,6 +14,6 @@ export const customerIdValidation = z.coerce.string()
 
 export const transferValidation = z.object({
   value: z.number().int().safe().positive(),
-  payer: z.number(),
-  payee: z.number(),
+  payer: z.string(),
+  payee: z.string(),
 })

@@ -1,10 +1,15 @@
 import assert from 'node:assert'
 import { describe, test } from 'node:test'
 import { IWalletTypes } from '#domain/interfaces/IEntities'
-import { Ftch } from '#testing/etoe/Ftch'
+import { Ftch } from '#testing/blackbox/Ftch'
 
 describe('E2E TEST', () => {
   const ftch = new Ftch('http://localhost:8081')
+  let counter = 0
+  function assertN() {
+    counter++
+    return counter
+  }
 
   describe('Customer E2E TEST', async () => {
     const customerDefault = {
@@ -22,26 +27,38 @@ describe('E2E TEST', () => {
       // No Customer Found
       {
         const response = await ftch.get('customer/1')
-        assert.equal(response.statuscode, 404, 'No customer, should be null')
+        assert.equal(response.statuscode, 404, `#${assertN()} No customer, should be null`)
       }
       // create a Customer
       {
         const response = await ftch.post('customer', customerDefault)
-        assert.equal(response.statuscode, 201, 'On sucess, status code hould be 201')
+        assert.equal(response.statuscode, 201, `#${assertN()} On sucess, status code hould be 201`)
         const parsedResponse = JSON.parse(response.body)
-        assert.notEqual(parsedResponse.id, undefined, 'Should return a id')
+        assert.notEqual(parsedResponse.id, undefined, `#${assertN()} Should return a id`)
         customerId = parsedResponse.id
-        assert.equal(parsedResponse.name, customerDefault.name, 'On Success should return the payload saved')
-        assert.equal(parsedResponse.document, customerDefault.document, 'On Success should return the payload saved')
-        assert.equal(parsedResponse.email, customerDefault.email, 'On Success should return the payload saved')
-        assert.equal(parsedResponse.password, undefined, 'On Success should not return password')
+        assert.equal(
+          parsedResponse.name,
+          customerDefault.name,
+          `#${assertN()} On Success should return the payload saved`,
+        )
+        assert.equal(
+          parsedResponse.document,
+          customerDefault.document,
+          `#${assertN()} On Success should return the payload saved`,
+        )
+        assert.equal(
+          parsedResponse.email,
+          customerDefault.email,
+          `#${assertN()} On Success should return the payload saved`,
+        )
+        assert.equal(parsedResponse.password, undefined, `#${assertN()} On Success should not return password`)
         assert.equal(
           parsedResponse.wallet.type,
           customerDefault.wallet.type,
-          'On Success should return the payload saved',
+          `#${assertN()} On Success should return the payload saved`,
         )
 
-        assert.equal(parsedResponse.wallet.balance, 300, 'All clients starts with R$ 300')
+        assert.equal(parsedResponse.wallet.balance, 300, `$${assertN()} All clients starts with R$ 300`)
       }
       // Customer Found
       {

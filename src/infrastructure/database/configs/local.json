@@ -16,5 +16,13 @@
     "host": "localhost",
     "port": "5433"
   },
+  "blackbox-test": {
+    "driver": "pg",
+    "user": "postgres",
+    "password": "postgres",
+    "database": "postgres",
+    "host": "localhost",
+    "port": "5434"
+  },
   "sql-file": true
 }

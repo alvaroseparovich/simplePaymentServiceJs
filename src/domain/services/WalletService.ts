@@ -13,4 +13,10 @@ export class WalletService implements IWalletService {
   async getWallet(customer_id: string): Promise<IWallet> {
     return this.walletRepository.find(customer_id)
   }
+  async debit(walletId: string, value: number): Promise<void> {
+    console.log('debit called')
+  }
+  async credit(walletId: string, value: number): Promise<void> {
+    console.log('credit called')
+  }
 }

@@ -9,12 +9,14 @@ import {
 import type { ICustomer } from '#domain/interfaces/IEntities'
 import type { ICustomerRequestDTO } from '#domain/interfaces/IRequestResponseDTOs'
 import { CustomerRequestDTO } from '#domain/interfaces/IRequestResponseDTOs'
-import type { ICustomerService } from '#domain/interfaces/IServices'
+import type { ICustomerService, ITransferService } from '#domain/interfaces/IServices'
 
 export class ApiController implements IApiController {
   private customerService: ICustomerService
-  constructor(customerService: ICustomerService) {
+  private transferService: ITransferService
+  constructor(customerService: ICustomerService, transferService: ITransferService) {
     this.customerService = customerService
+    this.transferService = transferService
   }
   async postCustomer(customer: ICustomerRequestDTO): Promise<HttpResponse<ICustomer>> {
     // TODO: Handle password
@@ -33,9 +35,12 @@ export class ApiController implements IApiController {
       body: customer,
     }
   }
-  postTransfer(transferDTO: ITransferDTO): ITransferResponseDTO {
+  async postTransfer(transferDTO: ITransferDTO): Promise<HttpResponse<ITransferResponseDTO>> {
     const transferBody = transferValidation.parse(transferDTO)
-
-    return {} as ITransferResponseDTO
+    const transfer = await this.transferService.transfer(transferBody)
+    return {
+      statusCode: HttpStatusCode.OK,
+      body: transfer,
+    }
   }
 }

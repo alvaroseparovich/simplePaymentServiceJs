@@ -15,11 +15,11 @@ dev/lint:
 # when its your first time: make infra/test/build 
 # and to start the env: make infra/test/up
 # then you can run the following command
-dev/test:
+dev/test-blackbox:
 	make dev/clear
+	make infra/blackbox-test/reset
+	make infra/blackbox-test/migrate
 	make typescript/compile
-	make infra/test/reset
-	make infra/test/migrate
 	node --test
 
 dev/clear:
@@ -69,7 +69,7 @@ infra/test/build:
 infra/test/up:
 	$(COMPOSER) -f docker-compose.test.yaml down	
 	$(COMPOSER) -f docker-compose.test.yaml up -d
-	sleep 10
+
 infra/test/down:
 	$(COMPOSER) -f docker-compose.test.yaml down	
 
@@ -77,6 +77,12 @@ infra/test/migrate:
 	npx db-migrate up $(DB_MIGRATE_CONFIG) -e test
 infra/test/reset:
 	npx db-migrate reset $(DB_MIGRATE_CONFIG) -e test
+infra/blackbox-test/migrate:
+	npx db-migrate up $(DB_MIGRATE_CONFIG) -e blackbox-test
+infra/blackbox-test/reset:
+	npx db-migrate reset $(DB_MIGRATE_CONFIG) -e blackbox-test
+
+
 
 
 infra/db/migration/create:
