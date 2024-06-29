@@ -1,9 +1,9 @@
 import assert from 'node:assert'
 import { describe, test } from 'node:test'
 import { IWalletTypes } from '#domain/interfaces/IEntities'
-import { Ftch } from '#testing/blackbox/Ftch'
+import { Ftch } from '#testing/blackbox/helper/Ftch'
 
-describe('E2E TEST', () => {
+describe('BlackBox TEST', () => {
   const ftch = new Ftch('http://localhost:8081')
   let counter = 0
   function assertN() {
@@ -11,7 +11,7 @@ describe('E2E TEST', () => {
     return counter
   }
 
-  describe('Customer E2E TEST', async () => {
+  describe('Customer BlackBox TEST', async () => {
     const customerDefault = {
       name: 'Kanopka Martin',
       document: '12345678911',

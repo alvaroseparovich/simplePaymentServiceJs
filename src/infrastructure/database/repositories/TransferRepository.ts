@@ -14,9 +14,9 @@ export class TransferRepository implements ITransferRepository {
 
   async create(transfer: ITransfer): Promise<ITransfer> {
     const query = `
-    INSERT INTO transfer (status, value, fromWallet, toWallet, createdAt)
+    INSERT INTO transfers (status, value, from_wallet, to_wallet, created_at)
     VALUES ($1, $2, $3, $4, $5)
-    RETURNING id, status, value, fromWallet, toWallet, createdAt
+    RETURNING id, status, value, from_wallet as fromWallet, to_wallet as toWallet, created_at as createdAt
     `
     const values = [transfer.status, transfer.value, transfer.fromWallet, transfer.toWallet, transfer.createdAt]
 
@@ -35,8 +35,8 @@ export class TransferRepository implements ITransferRepository {
 
   async find(id: string): Promise<ITransfer> {
     const query = `
-    SELECT id, status, value, fromWallet, toWallet, createdAt
-    FROM transfer
+    SELECT id, status, value, from_wallet as fromWallet, to_wallet as toWallet, created_at as createdAt
+    FROM transfers
     WHERE id = $1
     `
     const values = [id]
