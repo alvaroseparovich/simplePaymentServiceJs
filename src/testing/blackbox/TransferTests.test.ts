@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import { describe, test } from 'node:test'
 import type { ITransferDTO } from '#domain/interfaces/IApiController'
-import { IWalletTypes } from '#domain/interfaces/IEntities'
+import { type ICustomer, IWalletTypes } from '#domain/interfaces/IEntities'
 import { Ftch } from '#testing/blackbox/helper/Ftch'
 
 describe('BlackBox TEST', () => {
@@ -44,7 +44,13 @@ describe('BlackBox TEST', () => {
           payee: String(payee.id),
         }
         const responseTransfer = await ftch.post('transfer', transferDTO)
-        console.log(responseTransfer)
+        assert.equal(responseTransfer.statuscode, 200, 'Transefer succeed')
+        assert.equal(JSON.parse(responseTransfer.body).success, true, 'Transefer body success')
+
+        const getPayer = JSON.parse((await ftch.get(`customer/${String(payer.id)}`)).body) as ICustomer
+        assert.equal(getPayer.wallet?.balance, 100, `need to have the original balance minus ${transferDTO.value}`)
+        const getPayee = JSON.parse((await ftch.get(`customer/${String(payee.id)}`)).body) as ICustomer
+        assert.equal(getPayee.wallet?.balance, 500, `need to have the original balance plus ${transferDTO.value}`)
       }
     })
   })

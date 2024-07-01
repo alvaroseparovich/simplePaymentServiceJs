@@ -65,13 +65,13 @@ infra/enter:
 
 infra/test/build:
 	$(COMPOSER) -f docker-compose.test.yaml up --build -d
-
 infra/test/up:
 	$(COMPOSER) -f docker-compose.test.yaml down	
 	$(COMPOSER) -f docker-compose.test.yaml up -d
-
 infra/test/down:
-	$(COMPOSER) -f docker-compose.test.yaml down	
+	$(COMPOSER) -f docker-compose.test.yaml down
+infra/test/logs:
+	$(COMPOSER) -f docker-compose.test.yaml logs	
 
 infra/test/migrate:
 	npx db-migrate up $(DB_MIGRATE_CONFIG) -e test

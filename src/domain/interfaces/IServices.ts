@@ -7,10 +7,10 @@ export interface ICustomerService {
 }
 
 export interface IWalletService {
-  getWallet(customer_id: string): Promise<IWallet>
-  saveWallet(wallet: IWallet, customer_id: string): Promise<IWallet>
-  debit(walletId: string, value: number): Promise<void>
-  credit(walletId: string, value: number): Promise<void>
+  getWallet(customerId: string): Promise<IWallet>
+  saveWallet(wallet: IWallet, customerId: string): Promise<IWallet>
+  debit(customerId: string, value: number): Promise<void>
+  credit(customerId: string, value: number): Promise<void>
 }
 
 export interface ITransferService {

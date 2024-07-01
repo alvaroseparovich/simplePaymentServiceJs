@@ -7,16 +7,16 @@ export class WalletService implements IWalletService {
   constructor(walletRepository: IWalletRepository) {
     this.walletRepository = walletRepository
   }
-  async saveWallet(wallet: IWallet, customer_id: string): Promise<IWallet> {
-    return this.walletRepository.create(wallet, customer_id)
+  async saveWallet(wallet: IWallet, customerId: string): Promise<IWallet> {
+    return this.walletRepository.create(wallet, customerId)
   }
-  async getWallet(customer_id: string): Promise<IWallet> {
-    return this.walletRepository.find(customer_id)
+  async getWallet(customerId: string): Promise<IWallet> {
+    return this.walletRepository.find(customerId)
   }
-  async debit(walletId: string, value: number): Promise<void> {
-    console.log('debit called')
+  async debit(customerId: string, value: number): Promise<void> {
+    this.walletRepository.debit(customerId, value)
   }
-  async credit(walletId: string, value: number): Promise<void> {
-    console.log('credit called')
+  async credit(customerId: string, value: number): Promise<void> {
+    this.walletRepository.credit(customerId, value)
   }
 }

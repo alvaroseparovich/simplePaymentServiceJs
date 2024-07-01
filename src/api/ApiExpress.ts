@@ -20,7 +20,7 @@ export default class ApiExpress {
 
     // Log all requests
     this.framework.use((req, res, next) => {
-      console.log(`/${req.method}`, req.body)
+      console.log(`/${req.method} ${req.url}`, req.body)
       next()
     })
 

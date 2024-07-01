@@ -38,8 +38,8 @@ export class TransferService implements ITransferService {
 
     const transfer = new Transfer(transferDto)
 
-    await this.walletService.debit(payer.wallet?.id as string, transferDto.value)
-    await this.walletService.credit(payee.wallet?.id as string, transferDto.value)
+    await this.walletService.debit(payer.id as string, transferDto.value)
+    await this.walletService.credit(payee.id as string, transferDto.value)
 
     transfer.status = ITransferStatus.COMPLETED
     await this.transferRepository.create(transfer)
