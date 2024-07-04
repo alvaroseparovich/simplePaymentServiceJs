@@ -1,4 +1,4 @@
-# Basic System in Kotlin
+# Simple Payment System
 Showing Alvaro best practices.  
 This is my code following [PicPay chalenge guidelines](/readme/chalenge-instructions.md).
 
