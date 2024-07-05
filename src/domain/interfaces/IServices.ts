@@ -9,8 +9,6 @@ export interface ICustomerService {
 export interface IWalletService {
   getWallet(customerId: string): Promise<IWallet>
   saveWallet(wallet: IWallet, customerId: string): Promise<IWallet>
-  debit(customerId: string, value: number): Promise<void>
-  credit(customerId: string, value: number): Promise<void>
 }
 
 export interface ITransferService {

@@ -13,10 +13,4 @@ export class WalletService implements IWalletService {
   async getWallet(customerId: string): Promise<IWallet> {
     return this.walletRepository.find(customerId)
   }
-  async debit(customerId: string, value: number): Promise<void> {
-    this.walletRepository.debit(customerId, value)
-  }
-  async credit(customerId: string, value: number): Promise<void> {
-    this.walletRepository.credit(customerId, value)
-  }
 }

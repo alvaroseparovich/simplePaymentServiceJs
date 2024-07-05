@@ -29,10 +29,7 @@ export class CustomerService implements ICustomerService {
     const customer = await this.customerRepository.find(id)
     const wallet = await this.walletService.getWallet(customer.id as string)
 
-    customer.wallet = {
-      type: wallet.type,
-      balance: wallet.balance,
-    }
+    customer.wallet = wallet
     return customer
   }
 }

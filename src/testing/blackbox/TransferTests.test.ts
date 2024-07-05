@@ -29,22 +29,32 @@ describe('BlackBox TEST', () => {
 
     test('Transfer - Life cicle', async () => {
       // create a Customer
+      const responsePayer = await ftch.post('customer', customerPayer)
+      assert.equal(responsePayer.statuscode, 201, 'should Create Payer')
+      const responsePayee = await ftch.post('customer', customerPayee)
+      assert.equal(responsePayee.statuscode, 201, 'should Create Payee')
+      const payer = JSON.parse(responsePayer.body)
+      const payee = JSON.parse(responsePayee.body)
+
       {
-        const responsePayer = await ftch.post('customer', customerPayer)
-        assert.equal(responsePayer.statuscode, 201, 'should Create Payer')
-        const responsePayee = await ftch.post('customer', customerPayee)
-        assert.equal(responsePayee.statuscode, 201, 'should Create Payee')
+        const transferDTO: ITransferDTO = {
+          value: 600,
+          payer: String(payer.id),
+          payee: String(payee.id),
+        }
+        const responseTransfer = await ftch.post('transfer', transferDTO)
+        assert.equal(responseTransfer.statuscode, 400, 'Transefer STATUS FAILED')
+        assert.equal(JSON.parse(responseTransfer.body).body, 'No suficient funds', 'No suficient funds')
+      }
 
-        const payer = JSON.parse(responsePayer.body)
-        const payee = JSON.parse(responsePayee.body)
-
+      {
         const transferDTO: ITransferDTO = {
           value: 200,
           payer: String(payer.id),
           payee: String(payee.id),
         }
         const responseTransfer = await ftch.post('transfer', transferDTO)
-        assert.equal(responseTransfer.statuscode, 200, 'Transefer succeed')
+        assert.equal(responseTransfer.statuscode, 200, 'Transefer STATUS OK')
         assert.equal(JSON.parse(responseTransfer.body).success, true, 'Transefer body success')
 
         const getPayer = JSON.parse((await ftch.get(`customer/${String(payer.id)}`)).body) as ICustomer

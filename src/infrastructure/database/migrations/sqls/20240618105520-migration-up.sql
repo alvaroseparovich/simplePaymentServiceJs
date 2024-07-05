@@ -11,5 +11,5 @@ CREATE TABLE wallets (
     id SERIAL PRIMARY KEY,
     customer_id INT NOT NULL UNIQUE,
     wallet_type VARCHAR(16) NOT NULL CHECK (wallet_type IN ('CUSTOMER', 'COMPANY')),
-    balance NUMERIC DEFAULT 0 NOT NULL
+    balance NUMERIC DEFAULT 0 NOT NULL CHECK(balance >= 0)
 );

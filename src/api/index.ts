@@ -13,12 +13,12 @@ import { AuthorizerExternal } from '#outsource-services/AuthorizerExternal'
 
 const walletRepository = new WalletRepository()
 const customerRepository = new CustomerRepository()
-const transferRepository = new TransferRepository()
+const transferRepository = new TransferRepository(walletRepository)
 
 const walletService = new WalletService(walletRepository)
 const customerService = new CustomerService(customerRepository, walletService)
 const authorizerExternal = new AuthorizerExternal()
-const transferService = new TransferService(transferRepository, customerService, walletService, authorizerExternal)
+const transferService = new TransferService(transferRepository, customerService, authorizerExternal)
 
 const apiController = new ApiController(customerService, transferService)
 

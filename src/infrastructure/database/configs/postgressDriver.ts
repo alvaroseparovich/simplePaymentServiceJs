@@ -1,8 +1,7 @@
-import { Pool } from 'pg'
+import { Pool, type PoolClient } from 'pg'
 
 export class Database {
   pool
-
   constructor(
     user = process.env.DATABASE_USER,
     host = process.env.DATABASE_HOST,
@@ -10,27 +9,25 @@ export class Database {
     password = process.env.DATABASE_PASSWORD,
     port = Number(process.env.DATABASE_PORT) || 5432,
   ) {
-    this.pool = new Pool({ user, host, database, password, port })
+    this.pool = new Pool({
+      user,
+      host,
+      database,
+      password,
+      port,
+      max: 10,
+      idleTimeoutMillis: 10000,
+      connectionTimeoutMillis: 2000,
+    })
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  async executeQuery(query: string, params: Array<any>) {
-    const client = await this.pool.connect()
+  async executeQuery(query: string, params: Array<any>, pool: PoolClient | Pool = this.pool) {
+    return await pool.query(query, params)
+  }
 
-    // Example:
-    // const query = `
-    //   INSERT INTO customers (full_name, email, document)
-    //   VALUES ($1, $2, $3)
-    // `;
-    // const params = [
-    //   customer.name,
-    //   customer.email,
-    //   customer.document
-    // ];
-
-    const res = await client.query(query, params)
-    client.release()
-    return res
+  async getTransactionPool() {
+    return await this.pool.connect()
   }
 }
 

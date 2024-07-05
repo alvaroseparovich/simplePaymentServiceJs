@@ -16,6 +16,7 @@ export class ApiErrorHandler implements IApiErrorHandler {
   }
 
   handle(error: Error & Partial<ApiError>): IErrorResponse<string, object> {
+    console.log('Error not expected', error)
     if (error.statusCode) {
       return {
         statusCode: error.statusCode,
@@ -28,7 +29,6 @@ export class ApiErrorHandler implements IApiErrorHandler {
       return this._third_party_handlers[error.name](error)
     }
 
-    console.log('Error not expected', error)
     return {
       statusCode: 500,
       body: 'Unexpected Error Ocurred',

@@ -19,3 +19,9 @@ export class RepositoryError extends ApiError {
     super(message, 400)
   }
 }
+
+export class TransferDeniedError extends ApiError {
+  constructor(message: string) {
+    super(message, 400)
+  }
+}

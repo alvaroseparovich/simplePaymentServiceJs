@@ -1,6 +1,7 @@
-import type { ITransferDTO } from '#domain/interfaces/IApiController'
+import type { ITransferWalletsDTO } from '#domain/interfaces/IApiController'
 import type { ITransfer } from '#domain/interfaces/IEntities'
 import { ITransferStatus } from '#domain/interfaces/IEntities'
+import type { ITransferWithCustomerDTO } from '#domain/services/TransferService'
 
 export class Transfer implements ITransfer {
   id?: string
@@ -9,11 +10,11 @@ export class Transfer implements ITransfer {
   fromWallet: string
   toWallet: string
   createdAt: Date
-  constructor(transferDto: ITransferDTO) {
-    this.status = ITransferStatus.FAILED
+  constructor(transferDto: ITransferWithCustomerDTO, status: ITransferStatus = ITransferStatus.FAILED) {
+    this.status = status
     this.value = transferDto.value
-    this.fromWallet = transferDto.payer
-    this.toWallet = transferDto.payee
+    this.fromWallet = transferDto.payer.wallet?.id as string
+    this.toWallet = transferDto.payee.wallet?.id as string
     this.createdAt = new Date()
   }
 }

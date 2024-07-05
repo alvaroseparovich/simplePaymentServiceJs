@@ -1,3 +1,4 @@
+import type { Pool, PoolClient } from 'pg'
 import type { IWallet } from '#domain/interfaces/IEntities'
 import type { IWalletRepository } from '#domain/interfaces/IRepositories'
 import { database } from '#infrastructure/database/configs/postgressDriver'
@@ -35,7 +36,7 @@ export class WalletRepository implements IWalletRepository {
     return result.rows[0] as IWallet
   }
 
-  async debit(customerId: string, value: number): Promise<void> {
+  async debit(customerId: string, value: number, pool: PoolClient | Pool = this.database.pool): Promise<void> {
     console.log('customerId =', customerId, ', value = ', value)
     const query = `
     UPDATE wallets
@@ -45,10 +46,10 @@ export class WalletRepository implements IWalletRepository {
 
     const values = [value, customerId]
 
-    await this.database.executeQuery(query, values)
+    await this.database.executeQuery(query, values, pool)
   }
 
-  async credit(customerId: string, value: number): Promise<void> {
+  async credit(customerId: string, value: number, pool: PoolClient | Pool = this.database.pool): Promise<void> {
     const query = `
     UPDATE wallets
     SET balance = balance + $1
@@ -57,6 +58,16 @@ export class WalletRepository implements IWalletRepository {
 
     const values = [value, customerId]
 
-    await this.database.executeQuery(query, values)
+    await this.database.executeQuery(query, values, pool)
+  }
+
+  async getAndLockBalance(customerId: string, pool: PoolClient | Pool): Promise<number> {
+    const query = `
+    SELECT balance FROM wallets WHERE id = $1 FOR UPDATE
+    `
+
+    const values = [customerId]
+
+    return (await this.database.executeQuery(query, values, pool)).rows[0].balance
   }
 }

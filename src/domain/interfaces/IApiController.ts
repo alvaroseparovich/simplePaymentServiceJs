@@ -12,6 +12,11 @@ export interface ITransferDTO {
   payer: string
   payee: string
 }
+export interface ITransferWalletsDTO {
+  value: number
+  payerWalletId: string
+  payeeWalletId: string
+}
 
 export interface ITransferResponseDTO extends ITransferDTO {
   success: boolean

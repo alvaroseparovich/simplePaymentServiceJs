@@ -1,6 +1,7 @@
 import { Transfer } from '#domain/entity/Transfer'
+import { TransferDeniedError } from '#domain/errors/Exceptions'
 import type { ITransferDTO, ITransferResponseDTO } from '#domain/interfaces/IApiController'
-import { type ICustomer, ITransferStatus, type IWallet } from '#domain/interfaces/IEntities'
+import { type ICustomer, type ITransfer, ITransferStatus, IWalletTypes } from '#domain/interfaces/IEntities'
 import type { ITransferRepository } from '#domain/interfaces/IRepositories'
 import type {
   IAuthorizerExternalService,
@@ -12,38 +13,30 @@ import type {
 export class TransferService implements ITransferService {
   private transferRepository: ITransferRepository
   private customerService: ICustomerService
-  private walletService: IWalletService
   private authorizer: IAuthorizerExternalService
 
   constructor(
     transferRepository: ITransferRepository,
     customerService: ICustomerService,
-    walletService: IWalletService,
     authorizer: IAuthorizerExternalService,
   ) {
     this.transferRepository = transferRepository
     this.customerService = customerService
-    this.walletService = walletService
     this.authorizer = authorizer
   }
 
   async transfer(transferDto: ITransferDTO): Promise<ITransferResponseDTO> {
     await this.authorizer.authorizeTransaction(transferDto)
 
-    // START TRANSACTION
     const payee = await this.customerService.getCustomer(transferDto.payee)
     const payer = await this.customerService.getCustomer(transferDto.payer)
 
-    await this.validateTransfer({ value: transferDto.value, payee, payer })
+    const transferAndCustomers: ITransferWithCustomerDTO = { value: transferDto.value, payee, payer }
+    await this.validateTransfer(transferAndCustomers)
 
-    const transfer = new Transfer(transferDto)
+    const transfer = new Transfer(transferAndCustomers)
 
-    await this.walletService.debit(payer.id as string, transferDto.value)
-    await this.walletService.credit(payee.id as string, transferDto.value)
-
-    transfer.status = ITransferStatus.COMPLETED
     await this.transferRepository.create(transfer)
-    // COMMIT TRANSACTION
 
     // TODO EVENT EMMIT
     return {
@@ -53,7 +46,16 @@ export class TransferService implements ITransferService {
     }
   }
 
-  private async validateTransfer(transfer: ITransferWithCustomerDTO): Promise<void> {}
+  private async validateTransfer(transferWithCustomers: ITransferWithCustomerDTO): Promise<void> {
+    const DENIED = transferWithCustomers.payer.wallet?.type === IWalletTypes.COMPANY
+
+    // TODO: EXTERNAL VALIDATION
+    if (DENIED) {
+      const transfer = new Transfer(transferWithCustomers, ITransferStatus.DENIED)
+      this.transferRepository.createFailedTransfer(transfer, ITransferStatus.DENIED)
+      throw new TransferDeniedError('Transfer DENIED')
+    }
+  }
 }
 
 export interface ITransferWithCustomerDTO {
