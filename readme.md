@@ -28,4 +28,7 @@ To follow it and keep our domain secure from external behaviour:
 [Here is](/readme/documentation-startup-guide.md) the full documentation, with more detailed desired behaviour.
 
 # Start up
-See the makefile
+run
+```
+make infra/up/complete
+```

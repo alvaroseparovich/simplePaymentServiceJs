@@ -1,0 +1,28 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "TRANSFER",
+  "collectionId": "eab84a77-bce0-4f78-8645-c0c7b8745a81",
+  "dateExported": "2024-11-19T10:24:03.900Z",
+  "version": "1.2",
+  "folders": [],
+  "requests": [
+    {
+      "_id": "53b64a1d-43a3-41c5-81b4-6f015fddd421",
+      "colId": "eab84a77-bce0-4f78-8645-c0c7b8745a81",
+      "containerId": "",
+      "name": "Transfer",
+      "url": "http://localhost:8080/transfer",
+      "method": "POST",
+      "sortNum": 10000,
+      "created": "2024-11-19T10:23:22.406Z",
+      "modified": "2024-11-19T10:23:22.406Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"value\": 300,\n  \"payee\": \"1\",\n  \"payer\": \"2\"\n}",
+        "form": []
+      }
+    }
+  ],
+  "ref": "fBy3tp6TQqf0I9f_yNRs-9Vhp62-_wfRzLATwIKiQm4hCPcMEfPnWmsPmohRDH8cuw2egPxp6NKIBWJhbEw4TQ"
+}

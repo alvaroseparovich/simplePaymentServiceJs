@@ -1,10 +1,12 @@
 import express from 'express'
 import 'express-async-errors'
-import type { Application, NextFunction, Request, Response, Router } from 'express'
+import type { Express, NextFunction, Request, Response, Router } from 'express'
+import { autoInjectable } from 'tsyringe'
 import type ErrorHandler from '#api/errors/ErrorHandler'
 
+@autoInjectable()
 export default class ApiExpress {
-  framework: Application
+  framework: Express
   router: Router
   errorHandler: ErrorHandler
   httpPort: number

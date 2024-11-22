@@ -16,6 +16,9 @@
     "formatter": {
       "semicolons": "asNeeded",
       "quoteStyle": "single"
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
     }
   },
   "formatter": {

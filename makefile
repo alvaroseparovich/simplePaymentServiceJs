@@ -27,7 +27,7 @@ dev/clear:
 
 
 docker/start: 
-	$(DOCKER) run --name picpic -p 8080:8080 -d --replace picpic"
+	$(DOCKER) run --name picpic -p 8080:8080 -d --replace picpic
 
 
 typescript/compile:
@@ -56,7 +56,6 @@ infra/up/complete:
 
 infra/up/build:
 	$(COMPOSER) up --build -d
-	sleep 10
 
 infra/down:
 	$(COMPOSER) down --remove-orphans -v
@@ -100,15 +99,22 @@ infra/db/migration/down:
 #| |__| |_| | |___ / ___ \| |___ ___) || |/ ___ \ |___| . \ 
 #|_____\___/ \____/_/   \_\_____|____/ |_/_/   \_\____|_|\_\
 
+QUEUE_NAME = transfer-notify
 AWS_CLI = aws --endpoint-url=http://localhost:4566
-QUEUE_NAME = first-queue
 QUEUE_URL = http://localhost:4566/000000000000/$(QUEUE_NAME)
 
 localstack/create-queue:
-	$(AWS_CLI) sqs create-queue --queue-name $(QUEUE_NAME)
+	@if [ -z "$(QUEUE_NAME)" ]; then \
+		read -p "Enter queue name: " queue_name; \
+		$(AWS_CLI) sqs create-queue --queue-name $$queue_name; \
+	else \
+		$(AWS_CLI) sqs create-queue --queue-name $(QUEUE_NAME); \
+	fi
 localstack/list-queues:
 	$(AWS_CLI) sqs list-queues
 localstack/send-message:
-	$(AWS_CLI) sqs send-message --queue-url $(QUEUE_URL) --message-body "Hello, World!"
+	$(AWS_CLI) sqs send-message --queue-url $(QUEUE_URL) --message-body $(MESSAGE);
 localstack/receive-message:
 	$(AWS_CLI) sqs receive-message --queue-url $(QUEUE_URL)
+localstack/purge-queue:
+	$(AWS_CLI) sqs purge-queue --queue-url $(QUEUE_URL)

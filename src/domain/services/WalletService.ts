@@ -1,10 +1,14 @@
+import { autoInjectable, delay, inject } from 'tsyringe'
 import type { IWallet } from '#domain/interfaces/IEntities'
-import type { IWalletRepository } from '#domain/interfaces/IRepositories'
-import type { IWalletService } from '#domain/interfaces/IServices'
+import { WalletRepository } from '#infrastructure/database/repositories/WalletRepository'
 
-export class WalletService implements IWalletService {
-  walletRepository: IWalletRepository
-  constructor(walletRepository: IWalletRepository) {
+@autoInjectable()
+export class WalletService {
+  walletRepository: WalletRepository
+  constructor(
+    @inject(delay(() => WalletRepository))
+    walletRepository: WalletRepository,
+  ) {
     this.walletRepository = walletRepository
   }
   async saveWallet(wallet: IWallet, customerId: string): Promise<IWallet> {

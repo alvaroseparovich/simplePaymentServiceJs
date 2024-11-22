@@ -1,11 +1,19 @@
+import { autoInjectable, delay, inject } from 'tsyringe'
 import type { ICustomer, IWallet } from '#domain/interfaces/IEntities'
-import type { ICustomerRepository } from '#domain/interfaces/IRepositories'
-import type { ICustomerService, IWalletService } from '#domain/interfaces/IServices'
+import { CustomerRepository } from '#infrastructure/database/repositories/CustomerRepository'
+import { WalletService } from './WalletService'
 
-export class CustomerService implements ICustomerService {
-  customerRepository: ICustomerRepository
-  walletService: IWalletService
-  constructor(customerRepository: ICustomerRepository, walletService: IWalletService) {
+@autoInjectable()
+export class CustomerService {
+  customerRepository: CustomerRepository
+  walletService: WalletService
+
+  constructor(
+    @inject(delay(() => CustomerRepository))
+    customerRepository: CustomerRepository,
+    @inject(delay(() => WalletService))
+    walletService: WalletService,
+  ) {
     this.customerRepository = customerRepository
     this.walletService = walletService
   }

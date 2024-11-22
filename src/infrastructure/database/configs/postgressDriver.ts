@@ -1,12 +1,13 @@
 import { Pool, type PoolClient } from 'pg'
+import localDbInfo from './local.json'
 
 export class Database {
   pool
   constructor(
-    user = process.env.DATABASE_USER,
-    host = process.env.DATABASE_HOST,
-    database = process.env.DATABASE_NAME,
-    password = process.env.DATABASE_PASSWORD,
+    user = process.env.DATABASE_USER || localDbInfo.local.user,
+    host = process.env.DATABASE_HOST || localDbInfo.local.host,
+    database = process.env.DATABASE_NAME || localDbInfo.local.database,
+    password = process.env.DATABASE_PASSWORD || localDbInfo.local.password,
     port = Number(process.env.DATABASE_PORT) || 5432,
   ) {
     this.pool = new Pool({

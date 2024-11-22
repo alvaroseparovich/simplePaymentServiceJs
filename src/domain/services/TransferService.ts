@@ -1,24 +1,25 @@
+import { autoInjectable, delay, inject } from 'tsyringe'
 import { Transfer } from '#domain/entity/Transfer'
 import { TransferDeniedError } from '#domain/errors/Exceptions'
 import type { ITransferDTO, ITransferResponseDTO } from '#domain/interfaces/IApiController'
-import { type ICustomer, type ITransfer, ITransferStatus, IWalletTypes } from '#domain/interfaces/IEntities'
-import type { ITransferRepository } from '#domain/interfaces/IRepositories'
-import type {
-  IAuthorizerExternalService,
-  ICustomerService,
-  ITransferService,
-  IWalletService,
-} from '#domain/interfaces/IServices'
+import { type ICustomer, ITransferStatus, IWalletTypes } from '#domain/interfaces/IEntities'
+import { TransferRepository } from '#infrastructure/database/repositories/TransferRepository'
+import { AuthorizerExternal } from '#outsource-services/AuthorizerExternal'
+import { CustomerService } from './CustomerService'
 
-export class TransferService implements ITransferService {
-  private transferRepository: ITransferRepository
-  private customerService: ICustomerService
-  private authorizer: IAuthorizerExternalService
+@autoInjectable()
+export class TransferService {
+  private transferRepository: TransferRepository
+  private customerService: CustomerService
+  private authorizer: AuthorizerExternal
 
   constructor(
-    transferRepository: ITransferRepository,
-    customerService: ICustomerService,
-    authorizer: IAuthorizerExternalService,
+    @inject(delay(() => TransferRepository))
+    transferRepository: TransferRepository,
+    @inject(delay(() => CustomerService))
+    customerService: CustomerService,
+    @inject(delay(() => AuthorizerExternal))
+    authorizer: AuthorizerExternal,
   ) {
     this.transferRepository = transferRepository
     this.customerService = customerService

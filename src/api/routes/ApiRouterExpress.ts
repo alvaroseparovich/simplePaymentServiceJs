@@ -1,10 +1,15 @@
 import { Router } from 'express'
-import { HttpStatusCode, type IApiController } from '#domain/interfaces/IApiController'
+import { autoInjectable, delay, inject } from 'tsyringe'
+import { ApiController } from '#domain/controllers/ApiController'
 
+@autoInjectable()
 export class ApiRouterExpress {
-  private apiController: IApiController
+  private apiController: ApiController
   router: Router
-  constructor(apiController: IApiController) {
+  constructor(
+    @inject(delay(() => ApiController))
+    apiController: ApiController,
+  ) {
     this.apiController = apiController
     this.router = Router()
     this.startRoutes()

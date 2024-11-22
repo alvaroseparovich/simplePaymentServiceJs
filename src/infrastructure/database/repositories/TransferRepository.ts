@@ -1,15 +1,22 @@
 import type { DatabaseError } from 'pg'
+import { autoInjectable, delay, inject } from 'tsyringe'
 import { ApiError, EntityNotFound, RepositoryError, TransferDeniedError } from '#domain/errors/Exceptions'
 import { type ITransfer, ITransferStatus } from '#domain/interfaces/IEntities'
-import type { ITransferRepository, IWalletRepository } from '#domain/interfaces/IRepositories'
 import { database } from '#infrastructure/database/configs/postgressDriver'
-import type { Database } from '#infrastructure/database/configs/postgressDriver'
+import { Database } from '#infrastructure/database/configs/postgressDriver'
+import { WalletRepository } from '#infrastructure/database/repositories/WalletRepository'
 
-export class TransferRepository implements ITransferRepository {
+@autoInjectable()
+export class TransferRepository {
   private database: Database
-  private walletRepository: IWalletRepository
+  private walletRepository: WalletRepository
 
-  constructor(walletRepository: IWalletRepository, db = database) {
+  constructor(
+    @inject(delay(() => WalletRepository))
+    walletRepository: WalletRepository,
+    @inject(delay(() => Database))
+    db = database,
+  ) {
     this.database = db
     this.walletRepository = walletRepository
   }

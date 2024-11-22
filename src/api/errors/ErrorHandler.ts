@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express'
+import { autoInjectable } from 'tsyringe'
 import type { IApiErrorHandler } from '#domain/interfaces/IApiErrorHandlers'
 
+@autoInjectable()
 export default class ErrorHandlerExpress {
   domainErrorHandler: IApiErrorHandler
 

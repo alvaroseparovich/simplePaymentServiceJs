@@ -1,10 +1,9 @@
 import type { Pool, PoolClient } from 'pg'
 import type { IWallet } from '#domain/interfaces/IEntities'
-import type { IWalletRepository } from '#domain/interfaces/IRepositories'
 import { database } from '#infrastructure/database/configs/postgressDriver'
 import type { Database } from '#infrastructure/database/configs/postgressDriver'
 
-export class WalletRepository implements IWalletRepository {
+export class WalletRepository {
   private database: Database
 
   constructor() {

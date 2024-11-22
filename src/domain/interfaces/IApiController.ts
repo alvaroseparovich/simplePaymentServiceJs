@@ -1,12 +1,3 @@
-import type { ICustomer } from '#domain/interfaces/IEntities'
-import type { ICustomerRequestDTO } from '#domain/interfaces/IRequestResponseDTOs'
-
-export interface IApiController {
-  postCustomer(customer: ICustomerRequestDTO): Promise<HttpResponse<ICustomer>>
-  getCustomer(id: string): Promise<HttpResponse<ICustomer>>
-  postTransfer(transferDTO: ITransferDTO): Promise<HttpResponse<ITransferResponseDTO>>
-}
-
 export interface ITransferDTO {
   value: number
   payer: string

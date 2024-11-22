@@ -1,4 +1,4 @@
-import { customerIdValidation, customerRequestDTOValidation, transferValidation } from '#domain/controllers/validation'
+import { customerRequestDTOValidation } from '#domain/controllers/validation'
 import type { ICustomer, IWallet } from '#domain/interfaces/IEntities'
 
 export interface ICustomerRequestDTO {

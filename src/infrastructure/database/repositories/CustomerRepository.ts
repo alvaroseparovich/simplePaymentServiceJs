@@ -1,11 +1,10 @@
 import type { DatabaseError } from 'pg'
 import { ApiError, EntityNotFound, RepositoryError } from '#domain/errors/Exceptions'
 import type { ICustomer } from '#domain/interfaces/IEntities'
-import type { ICustomerRepository } from '#domain/interfaces/IRepositories'
 import { database } from '#infrastructure/database/configs/postgressDriver'
 import type { Database } from '#infrastructure/database/configs/postgressDriver'
 
-export class CustomerRepository implements ICustomerRepository {
+export class CustomerRepository {
   private database: Database
 
   constructor(db = database) {

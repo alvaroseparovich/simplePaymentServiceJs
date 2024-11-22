@@ -1,4 +1,3 @@
-import type { ITransferWalletsDTO } from '#domain/interfaces/IApiController'
 import type { ITransfer } from '#domain/interfaces/IEntities'
 import { ITransferStatus } from '#domain/interfaces/IEntities'
 import type { ITransferWithCustomerDTO } from '#domain/services/TransferService'

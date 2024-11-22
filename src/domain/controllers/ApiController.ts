@@ -1,20 +1,27 @@
+import { autoInjectable, delay, inject } from 'tsyringe'
 import { customerIdValidation, transferValidation } from '#domain/controllers/validation'
 import {
   type HttpResponse,
   HttpStatusCode,
-  type IApiController,
   type ITransferDTO,
   type ITransferResponseDTO,
 } from '#domain/interfaces/IApiController'
 import type { ICustomer } from '#domain/interfaces/IEntities'
 import type { ICustomerRequestDTO } from '#domain/interfaces/IRequestResponseDTOs'
 import { CustomerRequestDTO } from '#domain/interfaces/IRequestResponseDTOs'
-import type { ICustomerService, ITransferService } from '#domain/interfaces/IServices'
+import { CustomerService } from '#domain/services/CustomerService'
+import { TransferService } from '#domain/services/TransferService'
 
-export class ApiController implements IApiController {
-  private customerService: ICustomerService
-  private transferService: ITransferService
-  constructor(customerService: ICustomerService, transferService: ITransferService) {
+@autoInjectable()
+export class ApiController {
+  private customerService: CustomerService
+  private transferService: TransferService
+  constructor(
+    @inject(delay(() => CustomerService))
+    customerService: CustomerService,
+    @inject(delay(() => TransferService))
+    transferService: TransferService,
+  ) {
     this.customerService = customerService
     this.transferService = transferService
   }
